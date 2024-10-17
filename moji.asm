@@ -1,5 +1,5 @@
 section .data
-    strings: db "Hello, World!"
+    strings: db "Hello, World! Cat"
     newline: db 10
     number: equ $ - strings
 section .text
