@@ -4,14 +4,25 @@ section .data
     number: equ $ - strings
 section .text
 global _start
-print_strings:
+print_strings_inc:
     mov rax, 1
     mov rdi, 1
-    lea rsi, [strings+rcx]
-    mov rdx, 1
+    lea rsi, [strings]
+    mov rdx, rcx
     push rcx
     syscall
     pop rcx
+    inc rcx
+    ret
+print_strings_dec:
+    mov rax, 1
+    mov rdi, 1
+    lea rsi, [strings]
+    mov rdx, rcx
+    push rcx
+    syscall
+    pop rcx
+    dec rcx
     ret
 print_newline:
     mov rax, 1
@@ -27,12 +38,16 @@ exit:
     xor rdi, rdi
     syscall
 _start:
-    mov rcx, 0
-.loop:
-    call print_strings
+    mov rcx, 1
+.loop1:
+    call print_strings_inc
     call print_newline
-    inc rcx
     cmp rcx, number-1
-    jl .loop
+    jne .loop1
+.loop2:
+    call print_strings_dec
+    call print_newline
+    cmp rcx, 0
+    jne .loop2
     call exit
 
